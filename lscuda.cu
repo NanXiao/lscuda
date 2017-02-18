@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 
 const int width = 32;
@@ -12,6 +13,32 @@ static void cudaSafeCall(cudaError_t err)
 	}
 }
 
+static std::string formatSize(size_t size)
+{
+	std::ostringstream stringStream;
+
+	stringStream.precision(1);
+	stringStream << std::fixed;
+
+	if (size < 1024 * 10)
+	{
+		stringStream << size;
+	}
+	else if (size < 1024 * 1024 * 10)
+	{
+		stringStream << (float)size / 1024 << " KiB";
+	}
+	else if (size < size_t(1024) * size_t(1024) * size_t(1024) * size_t(10))
+	{
+		stringStream << (float)size / (1024 * 1024) << " MiB";
+	}
+	else
+	{
+		stringStream << (float)size / (1024 * 1024 * 1024) << " GiB";
+	}
+	return stringStream.str();
+}
+
 static void displayDeviceProperties(cudaDeviceProp& prop, int device)
 {
 	std::cout << std::setw(width) << std::left << "GPU Device ID:" << device << std::endl;
@@ -19,15 +46,15 @@ static void displayDeviceProperties(cudaDeviceProp& prop, int device)
 	std::cout << std::setw(width) << std::left << "  Compute Capability:" << prop.major << "." << prop.minor << std::endl;
 	std::cout << std::setw(width) << std::left << "  Clock Rate:" << prop.clockRate / (1000) << " MHz" << std::endl;
 	std::cout << std::setw(width) << std::left << "  Warp Size:" << prop.warpSize << std::endl;
-	std::cout << std::setw(width) << std::left << "  L2 Cache Size:" << prop.l2CacheSize / 1024 << " KiB" << std::endl;
-	std::cout << std::setw(width) << std::left << "  Global Memory Size:" << prop.totalGlobalMem / (1024 * 1024) << " MiB" << std::endl;
-	std::cout << std::setw(width) << std::left << "  Constant Memory Size:" << prop.totalConstMem / 1024 << " KiB" << std::endl;
+	std::cout << std::setw(width) << std::left << "  L2 Cache Size:" << formatSize(prop.l2CacheSize) << std::endl;
+	std::cout << std::setw(width) << std::left << "  Global Memory Size:" << formatSize(prop.totalGlobalMem) << std::endl;
+	std::cout << std::setw(width) << std::left << "  Constant Memory Size:" << formatSize(prop.totalConstMem) << std::endl;
 	std::cout << std::setw(width) << std::left << "  One-Dimension Texture Size:" << prop.maxTexture1D << std::endl;
 	std::cout << std::setw(width) << std::left << "  Two-Dimension Texture Size:" << prop.maxTexture2D[0] << " x "
 			<< prop.maxTexture2D[1] << std::endl;
 	std::cout << std::setw(width) << std::left << "  Three-Dimension Texture Size:" << prop.maxTexture3D[0] << " x "
 			<< prop.maxTexture3D[1] << " x " << prop.maxTexture3D[2] << std::endl;
-	std::cout << std::setw(width) << std::left << "  Shared Memory Size Per Block:" << prop.sharedMemPerBlock / 1024 << " KiB" << std::endl;
+	std::cout << std::setw(width) << std::left << "  Shared Memory Size Per Block:" << formatSize(prop.sharedMemPerBlock) << std::endl;
 	std::cout << std::setw(width) << std::left << "  Max Threads Per Block:" << prop.maxThreadsPerBlock << std::endl;
 	std::cout << std::setw(width) << std::left << "  Registers Per Block:" << prop.regsPerBlock << std::endl;
 	std::cout << std::setw(width) << std::left << "  Block Dimension:" << prop.maxThreadsDim[0] << " x "
