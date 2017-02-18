@@ -7,5 +7,8 @@
         $ cd lscuda  
         $ make  
         $ ./lscuda  
+* Running Snapshot:  
+![image](https://raw.githubusercontent.com/NanXiao/lscuda/master/snapshot.jpg)  
+
 * Reference:  
 [CUDA-Z](http://cuda-z.sourceforge.net/).
