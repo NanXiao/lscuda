@@ -2,7 +2,7 @@
 #include <sstream>
 #include <iomanip>
 
-const int width = 32;
+const int width = 34;
 
 static void cudaSafeCall(cudaError_t err)
 {
@@ -10,6 +10,55 @@ static void cudaSafeCall(cudaError_t err)
 	{
 		std::cerr << cudaGetErrorString(err) << std::endl;
 		exit(1);
+	}
+}
+
+static int getCoreNumPerSP(int major, int minor)
+{
+	switch (major)
+	{
+		case 2:
+		{
+			if (minor == 0)
+			{
+				return 32;
+			}
+			else if (minor == 1)
+			{
+				return 48;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		case 3:
+		{
+			return 192;
+		}
+		case 5:
+		{
+			return 128;
+		}
+		case 6:
+		{
+			if (minor == 0)
+			{
+				return 64;
+			}
+			else if ((minor == 1) || (minor == 2))
+			{
+				return 128;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		default:
+		{
+			return 0;
+		}
 	}
 }
 
@@ -44,6 +93,9 @@ static void displayDeviceProperties(cudaDeviceProp& prop, int device)
 	std::cout << std::setw(width) << std::left << "GPU Device ID:" << device << std::endl;
 	std::cout << std::setw(width) << std::left << "  Name:" << prop.name << std::endl;
 	std::cout << std::setw(width) << std::left << "  Compute Capability:" << prop.major << "." << prop.minor << std::endl;
+	std::cout << std::setw(width) << std::left << "  MultiProcessor(s):" << prop.multiProcessorCount << std::endl;
+	std::cout << std::setw(width) << std::left << "  Cores Per MultiProcessor:" << getCoreNumPerSP(prop.major, prop.minor) << std::endl;
+	std::cout << std::setw(width) << std::left << "  Max Threads Per MultiProcessor:" << prop.maxThreadsPerMultiProcessor << std::endl;
 	std::cout << std::setw(width) << std::left << "  Clock Rate:" << prop.clockRate / (1000) << " MHz" << std::endl;
 	std::cout << std::setw(width) << std::left << "  Warp Size:" << prop.warpSize << std::endl;
 	std::cout << std::setw(width) << std::left << "  L2 Cache Size:" << formatSize(prop.l2CacheSize) << std::endl;
