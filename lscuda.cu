@@ -131,7 +131,7 @@ int main(void)
 	cudaDeviceProp *prop = new cudaDeviceProp[gpuCount];
 	if (prop == NULL)
 	{
-		std::cout << "The memoey is too small, and please enlarge it, thx!" << std::endl;
+		std::cout << "The memory is too small, and please enlarge it, thanks!" << std::endl;
 		exit(1);
 	}
 
