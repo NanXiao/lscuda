@@ -11,4 +11,5 @@
 ![image](https://raw.githubusercontent.com/NanXiao/lscuda/master/snapshot.jpg)  
 
 * Reference:  
+[Professional CUDA C Programming](http://www.wrox.com/WileyCDA/WroxTitle/Professional-CUDA-C-Programming.productCd-1118739329.html);  
 [CUDA-Z](http://cuda-z.sourceforge.net/).
