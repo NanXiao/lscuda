@@ -113,7 +113,8 @@ static void displayDeviceProperties(cudaDeviceProp& prop, int device)
 			<< prop.maxThreadsDim[1] << " x " << prop.maxThreadsDim[2] << std::endl;
 	std::cout << std::setw(width) << std::left << "  Grid Dimension:" << prop.maxGridSize[0] << " x "
 			<< prop.maxGridSize[1] << " x " << prop.maxGridSize[2] << std::endl;
-
+	std::cout << std::setw(width) << std::left << "  Unified address space:" << std::boolalpha << (prop.unifiedAddressing ? true : false) << std::endl;
+	
 	return;
 }
 
