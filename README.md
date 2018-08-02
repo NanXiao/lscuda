@@ -5,6 +5,9 @@
 
         $ git clone https://github.com/NanXiao/lscuda.git  
         $ cd lscuda  
+        $ mkdir build  
+        $ cd build
+        $ cmake ..
         $ make  
         $ ./lscuda  
 * Running Snapshot:  
